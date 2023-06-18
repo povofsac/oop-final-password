@@ -7,59 +7,6 @@
 
 using namespace std;
 
-int getPasswordLength(int strengthLevel) {
-    int length;
-    switch (strengthLevel) {
-        case 1:
-            length = 6; 
-            break;
-        case 2:
-            length = 10; 
-            break;
-        case 3:
-            length = 14; 
-            break;
-        default:
-            length = 0; 
-    }
-    return length;
-}
-
-string generatePassword(int length, int strengthLevel) {
-    string password;
-    string lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
-    string uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    string digitChars = "0123456789";
-    string specialChars = "!@#$%^&*()";
-
-    string characters;
-
-    
-    characters += lowercaseChars;
-    characters += uppercaseChars;
-
-    if (strengthLevel >= 2) {
-        
-        characters += digitChars;
-    }
-
-    if (strengthLevel >= 3) {
-        
-        characters += specialChars;
-    }
-
-    random_device rd;
-    mt19937 generator(rd());
-    uniform_int_distribution<int> distribution(0, characters.length() - 1);
-
-    for (int i = 0; i < length; i++) {
-        int index = distribution(generator);
-        password += characters[index];
-    }
-
-    return password;
-}
-
 int main() {
     int strengthLevel;
     cout << "Enter desired password strength level (1 = Weak, 2 = Strong, 3 = Unbreakable): ";
@@ -70,8 +17,10 @@ int main() {
         cin >> strengthLevel;
     }
 
-    int passwordLength = getPasswordLength(strengthLevel);
-    string password = generatePassword(passwordLength, strengthLevel);
+
+ PasswordGenerator generator;
+    int passwordLength = generator.getPasswordLength(strengthLevel);
+    string password = generator.generatePassword(passwordLength, strengthLevel);
 
     cout << "Generated Password: " << password << endl;
 
@@ -102,3 +51,4 @@ int main() {
 
     return 0;
 }
+
