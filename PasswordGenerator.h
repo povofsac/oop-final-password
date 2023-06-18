@@ -4,59 +4,62 @@
 
 #include <string>
 #include <random>
-
+using namespace std;
 class PasswordGenerator {
 private:
-    std::string password;
-    std::mt19937 generator;
 
-    char getRandomChar(int strengthLevel) {
-        std::uniform_int_distribution<int> distribution(0, 255);
-
-        int type = distribution(generator) % 4;
-        if (type == 0 && strengthLevel == 3)
-            return "!@#$%^&*(),.?\":{}|<> "[distribution(generator) % 18];  // Add special characters here
-        else if (type == 2 && strengthLevel == 2)
-            return '0' + distribution(generator) % 10;
-        else if (type == 1)
-            return 'a' + distribution(generator) % 26;
-        else
-            return 'A' + distribution(generator) % 26;
-    }
+    string lowercaseChars;
+    string uppercaseChars;
+    string digitChars;
+    string specialChars;
 
 public:
-    PasswordGenerator() {
-        std::random_device rd;
-        generator.seed(rd());
+  PasswordGenerator() {
+        lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+        uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        digitChars = "0123456789";
+        specialChars = "!@#$%^&*()";
+    }
+    int getPasswordLength(int strengthLevel) {
+        int length;
+        switch (strengthLevel) {
+            case 1:
+                length = 6;
+                break;
+            case 2:
+                length = 10;
+                break;
+            case 3:
+                length = 14;
+                break;
+            default:
+                length = 0;
+        }
+        return length;
     }
 
-    std::string generatePassword(int strengthLevel) {
-        int length = 0;
-        switch(strengthLevel)
-        {
-        case 1:
-            length = 8;
-            for (int i = 0; i < length; ++i) {
-                password += getRandomChar(1);
-            }
-            break;
-        case 2:
-            length = 12;
-            for (int i = 0; i < length; ++i) {
-                password += getRandomChar(2);
-            }
-            break;
-        case 3:
-            length = 15;
-            for (int i = 0; i < length; ++i) {
-                password += getRandomChar(3);
-            }
-            break;
-        default:
-            break;
+    string generatePassword(int length, int strengthLevel) {
+        string characters = lowercaseChars + uppercaseChars;
+
+        if (strengthLevel >= 2) {
+            characters += digitChars;
         }
+
+        if (strengthLevel >= 3) {
+            characters += specialChars;
+        }
+
+        random_device rd;
+        mt19937 generator(rd());
+        uniform_int_distribution<int> distribution(0, characters.length() - 1);
+
+        string password;
+        for (int i = 0; i < length; i++) {
+            int index = distribution(generator);
+            password += characters[index];
+        }
+
         return password;
     }
 };
-
 #endif
