@@ -3,7 +3,7 @@
 #include <iostream>
 #include <random>
 #include <string>
-#include <algorithm>
+
 
 using namespace std;
 
@@ -17,6 +17,7 @@ int main() {
         cin >> strengthLevel;
     }
 
+int age;
 
  PasswordGenerator generator;
     int passwordLength = generator.getPasswordLength(strengthLevel);
@@ -25,7 +26,6 @@ int main() {
     cout << "Generated Password: " << password << endl;
 
     PasswordStrengthChecker strengthChecker(password);
-
     switch (strengthLevel) {
         case 1:
             if (!strengthChecker.isStrong() && !strengthChecker.isUnbreakable())
