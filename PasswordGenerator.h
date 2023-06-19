@@ -1,4 +1,3 @@
-
 #ifndef PasswordGenerator_h
 #define PasswordGenerator_h
 
@@ -7,12 +6,10 @@
 using namespace std;
 class PasswordGenerator {
 private:
-
     string lowercaseChars;
     string uppercaseChars;
     string digitChars;
     string specialChars;
-
 public:
   PasswordGenerator() {
         lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
